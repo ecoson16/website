@@ -15,6 +15,7 @@ import { ThemeGeneratorKeys } from "@/constants/application.ts";
 import { readThemeGeneratorColors } from "@/lib/helpers/read-theme-generator-colors.ts";
 import { readThemeGeneratorStyles } from "@/lib/helpers/read-theme-generator-styles.ts";
 import { getContrastRatio } from "@/lib/helpers/color-contrast.ts";
+import { sanitizeExportName } from "@/lib/helpers/sanitize-export-name.ts";
 import {
   isRecord,
   sanitizeColorOverrides,
@@ -255,38 +256,6 @@ function deleteSavedTheme() {
 
   savedThemes.value = savedThemes.value.filter(item => item.name !== theme.name);
   selectedSavedTheme.value = "";
-}
-
-function sanitizeExportName(value: string): string {
-  const invalidCharacters = String.raw`\\/:*?"<>|`;
-  let result = "";
-  let previousWasSpace = false;
-
-  for (const character of value.trim()) {
-    const code = (character.codePointAt(0) ?? 0);
-
-    if (invalidCharacters.includes(character) || code < 32 || code === 127) {
-      result += "-";
-      previousWasSpace = false;
-
-      continue;
-    }
-
-    if (character.trim() === "") {
-      if (!previousWasSpace) {
-        result += " ";
-      }
-
-      previousWasSpace = true;
-
-      continue;
-    }
-
-    result += character;
-    previousWasSpace = false;
-  }
-
-  return result.slice(0, 64).trim() || "My Custom Theme";
 }
 
 function downloadTheme() {
