@@ -1,29 +1,18 @@
 import { DefaultColors } from "@/constants/customization.ts";
 import { ThemeGeneratorKeys } from "@/constants/application.ts";
+import { mergeThemeColors } from "@/lib/helpers/theme-validation.ts";
 
 export function readThemeGeneratorColors(): typeof DefaultColors {
-  const stored = localStorage.getItem(ThemeGeneratorKeys.Colors);
-
-  if (!stored) {
-    return DefaultColors;
-  }
-
-  let parsed: unknown;
-
   try {
-    parsed = JSON.parse(stored);
+    const stored = localStorage.getItem(ThemeGeneratorKeys.Colors);
+
+    if (!stored) {
+      return { ...DefaultColors };
+    }
+
+    return mergeThemeColors(JSON.parse(stored) as unknown);
   } catch {
-    return DefaultColors;
+    // Invalid JSON or unavailable browser storage should never stop the editor.
+    return { ...DefaultColors };
   }
-
-  if (
-    typeof parsed !== "object" ||
-    parsed === null ||
-    // a shallow validation that at least one element is present
-    !("Base" in parsed)
-  ) {
-    return DefaultColors;
-  }
-
-  return parsed as typeof DefaultColors;
 }
