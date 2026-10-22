@@ -1,1 +1,0 @@
-Made using https://yqnn.github.io/svg-path-editor/ and https://fonts.google.com/icons?icon.size=24&icon.color=%23e3e3e3
