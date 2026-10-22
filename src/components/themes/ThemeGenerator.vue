@@ -285,17 +285,26 @@ function toggleCodeView() {
 }
 
 async function handleImport(event: Event) {
-  const importedColors = await readImportedColors({ event });
+  const input = event.target instanceof HTMLInputElement ? event.target : null;
 
-  if (importedColors === 0) {
-    return;
+  try {
+    const importedColors = await readImportedColors({ event });
+
+    if (importedColors === 0) {
+      return;
+    }
+
+    colors.value = {
+      ...colors.value,
+      ...importedColors,
+    };
+    selectedPreset.value = "";
+  } finally {
+    // Clearing the picker allows the same file to be imported again.
+    if (input) {
+      input.value = "";
+    }
   }
-
-  colors.value = {
-    ...colors.value,
-    ...importedColors,
-  };
-  selectedPreset.value = "";
 }
 
 function modifyStyles(newStyles: typeof DefaultCSS) {
