@@ -22,7 +22,7 @@ jobs:
           bun-version: latest
       - name: Regenerate lockfile
         run: |
-          bun install --save-text-lockfile --frozen-lockfile --lockfile-only
+          bun install --save-text-lockfile --lockfile-only
           test -f bun.lock
           git add bun.lock
           if [ -e bun.lockb ]; then
