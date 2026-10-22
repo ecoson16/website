@@ -257,12 +257,41 @@ function deleteSavedTheme() {
   selectedSavedTheme.value = "";
 }
 
+function sanitizeExportName(value: string): string {
+  const invalidCharacters = '\\/:*?"<>|';
+  let result = "";
+  let previousWasSpace = false;
+
+  for (const character of value.trim()) {
+    const code = character.charCodeAt(0);
+
+    if (invalidCharacters.includes(character) || code < 32 || code === 127) {
+      result += "-";
+      previousWasSpace = false;
+
+      continue;
+    }
+
+    if (character.trim() === "") {
+      if (!previousWasSpace) {
+        result += " ";
+      }
+
+      previousWasSpace = true;
+
+      continue;
+    }
+
+    result += character;
+    previousWasSpace = false;
+  }
+
+  return result.slice(0, 64).trim() || "My Custom Theme";
+}
+
 function downloadTheme() {
-  const zip = (new JSZip);
-  const folderName = (themeName.value.trim() || "My Custom Theme")
-    .replaceAll(/[\\/:*?"<>|\u0000-\u001F]/g, "-")
-    .replaceAll(/\s+/g, " ")
-    .slice(0, 64) || "My Custom Theme";
+  const zip = new JSZip();
+  const folderName = sanitizeExportName(themeName.value);
   const folder = zip.folder(folderName);
 
   if (!folder) {
