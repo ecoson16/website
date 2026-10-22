@@ -1,4 +1,4 @@
-import { DefaultColors } from "@/constants/customization.ts";
+import type { DefaultColors } from "@/constants/customization.ts";
 import { isRecord, sanitizeColorOverrides } from "@/lib/helpers/theme-validation.ts";
 
 export function parseImportedColors(content: string): Partial<typeof DefaultColors> | 0 {
