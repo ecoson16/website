@@ -1,57 +1,46 @@
-import type { DefaultColors } from "@/constants/customization.ts";
+import { DefaultColors } from "@/constants/customization.ts";
+import { isRecord, sanitizeColorOverrides } from "@/lib/helpers/theme-validation.ts";
+
+export function parseImportedColors(content: string): Partial<typeof DefaultColors> | 0 {
+  let parsed: unknown;
+
+  try {
+    parsed = JSON.parse(content);
+  } catch {
+    return 0;
+  }
+
+  if (!isRecord(parsed) || !isRecord(parsed.colors)) {
+    return 0;
+  }
+
+  return sanitizeColorOverrides(parsed.colors) ?? 0;
+}
 
 export async function readImportedColors({
   event,
 }: {
   "event": Event;
-}): Promise<typeof DefaultColors | 0> {
-  /*
-   * Not sure if it will work like supposed in every browser...
-   *
-   * if (
-   *   event.target === null ||
-   *   !("files" in event.target) ||
-   *   typeof event.target.files !== "object" ||
-   *   event.target.files === null ||
-   *   !("0" in event.target.files)
-   * ) {
-   *   return;
-   * }
-   */
-  if (event.target === null) {
-    console.error("No file was imported (?)");
-
-    return 0;
-  }
-
-  const target = event.target as Partial<{ "files": [Blob] }>;
+}): Promise<Partial<typeof DefaultColors> | 0> {
+  const target = event.target as HTMLInputElement | null;
   const file = target?.files?.[0];
-  const content = await file?.text?.();
 
-  if (!content) {
-    console.error("No file was imported (?)");
-
+  if (!file) {
     return 0;
   }
 
   try {
-    const parsed: unknown = JSON.parse(content);
+    const content = await file.text();
+    const imported = parseImportedColors(content);
 
-    if (
-      typeof parsed !== "object" ||
-      parsed === null ||
-      !("colors" in parsed)
-    ) {
-      console.error("Imported color scheme is not valid");
-
-      return 0;
+    if (imported === 0) {
+      console.error("Imported theme did not contain any valid supported color values");
     }
 
-    // Let's just believe in unknown input for once
-    return parsed.colors as typeof DefaultColors;
+    return imported;
   } catch (error: unknown) {
-    console.error("Couldn't import a color scheme:", error);
-  }
+    console.error("Couldn't read the imported color scheme:", error);
 
-  return 0;
+    return 0;
+  }
 }
