@@ -114,9 +114,9 @@ const itemsThemesSettings = [
               borderColor : tabBorderless ? 'transparent' : background,
               borderRadius: tabBorderless ? 0 : '2px 2px 0 0',
               color       : backgroundText,
-              marginRight : `${tabGap}px` || 0,
+              marginRight : tabGap === false ? 0 : `${tabGap}px`,
               padding     : tabBorderless
-                ? `${tabPadding}px` || 0
+                ? tabPadding === false ? 0 : `${tabPadding}px`
                 : '8px',
               height: tabBorderless
                 ? 'auto'
