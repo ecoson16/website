@@ -182,6 +182,12 @@ function toggleButton(selector: UnwrapRef<typeof styleResetButtons>[number]["sel
   });
 }
 
+function getColorInputValue(value: false | string): string {
+  return typeof value === "string" && (/^#[\\da-f]{6}(?:[\\da-f]{2})?$/i).test(value)
+    ? value.slice(0, 7)
+    : highlight;
+}
+
 function getPushButtonBackground(inputBackground: false | string, borderless: boolean) {
   if (borderless && (inputBackground === false)) {
     return "transparent";
@@ -246,7 +252,7 @@ function getPushButtonBackground(inputBackground: false | string, borderless: bo
           @input="handleColorInput"
           :id="`color-${name}`"
           :name="name"
-          :value="styles[name]['background-color']"
+          :value="getColorInputValue(styles[name]['background-color'])"
         />
         <label :for="`color-${name}`" class="cursor-pointer pl-2 text-gray-400 font-medium">
           <span class="text-white">{{ key }}</span>
@@ -295,7 +301,9 @@ function getPushButtonBackground(inputBackground: false | string, borderless: bo
         ),
         borderColor : styles.QPushButton.border ? 'transparent' : '#ffffff27',
         borderRadius: styles.QPushButton.border ? 0 : '2px',
-        padding     : styles.QPushButton.padding || '2px 4px',
+        padding     : styles.QPushButton.padding === false
+          ? '2px 4px'
+          : `${styles.QPushButton.padding}px`,
       }"
     >
       {{ pushButton }}
