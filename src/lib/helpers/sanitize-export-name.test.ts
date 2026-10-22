@@ -3,7 +3,7 @@ import { sanitizeExportName } from "./sanitize-export-name.ts";
 
 test("replaces invalid path characters and condenses whitespace", () => {
   expect(sanitizeExportName("  My:  Theme/Blue  ")).toBe("My- Theme-Blue");
-  expect(sanitizeExportName("a\\b|c")).toBe("a-b-c");
+  expect(sanitizeExportName(String.raw`a\b|c`)).toBe("a-b-c");
 });
 
 test("provides a safe fallback for empty and path-only names", () => {
