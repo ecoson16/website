@@ -14,8 +14,8 @@ export function isHexColor(value: unknown, allowAlpha = false): value is string 
   }
 
   return allowAlpha
-    ? /^#[\da-f]{6}(?:[\da-f]{2})?$/i.test(value)
-    : /^#[\da-f]{6}$/i.test(value);
+    ? (/^#[\da-f]{6}(?:[\da-f]{2})?$/i).test(value)
+    : (/^#[\da-f]{6}$/i).test(value);
 }
 
 /** Accept only supported color keys and valid six-digit colors from untrusted input. */
@@ -40,7 +40,7 @@ export function sanitizeColorOverrides(value: unknown): Partial<ThemeColors> | n
 export function mergeThemeColors(value: unknown): ThemeColors {
   return {
     ...DefaultColors,
-    ...(sanitizeColorOverrides(value) ?? {}),
+    ...sanitizeColorOverrides(value),
   };
 }
 
@@ -92,12 +92,12 @@ export function sanitizeThemeStyles(value: unknown): typeof DefaultCSS {
   const tabBarTabSelected = getNestedRecord(input, "QTabBar::tab:selected");
 
   return {
-    "LayoutBorder": getBoolean(input, "LayoutBorder", false),
+    "LayoutBorder"   : getBoolean(input, "LayoutBorder", false),
     "QObject::handle": getBoolean(input, "QObject::handle", false),
-    "QToolButton": {
-      "border": getBoolean(toolButton, "border", false),
+    "QToolButton"    : {
+      "border"          : getBoolean(toolButton, "border", false),
       "background-color": getColorOrFalse(toolButton, "background-color"),
-      "padding": getNumberOrFalse(toolButton, "padding"),
+      "padding"         : getNumberOrFalse(toolButton, "padding"),
     },
     "QToolButton:on": {
       "background-color": getColorOrFalse(toolButtonOn, "background-color"),
@@ -109,9 +109,9 @@ export function sanitizeThemeStyles(value: unknown): typeof DefaultCSS {
       "background-color": getColorOrFalse(toolButtonPressed, "background-color"),
     },
     "QPushButton": {
-      "border": getBoolean(pushButton, "border", false),
+      "border"          : getBoolean(pushButton, "border", false),
       "background-color": getColorOrFalse(pushButton, "background-color"),
-      "padding": getNumberOrFalse(pushButton, "padding"),
+      "padding"         : getNumberOrFalse(pushButton, "padding"),
     },
     "QPushButton:on": {
       "background-color": getColorOrFalse(pushButtonOn, "background-color"),
@@ -129,9 +129,9 @@ export function sanitizeThemeStyles(value: unknown): typeof DefaultCSS {
       "left": getNumberOrFalse(tabWidgetTabBar, "left"),
     },
     "QTabBar::tab": {
-      "padding": getNumberOrFalse(tabBarTab, "padding"),
+      "padding"     : getNumberOrFalse(tabBarTab, "padding"),
       "margin-right": getNumberOrFalse(tabBarTab, "margin-right"),
-      "border": getBoolean(tabBarTab, "border", false),
+      "border"      : getBoolean(tabBarTab, "border", false),
     },
     "QTabBar::tab:hover": {
       "background-color": getColorOrFalse(tabBarTabHover, "background-color"),

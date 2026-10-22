@@ -23,9 +23,9 @@ import {
 import Highlighter from "@/components/themes/code/Highlighter.vue";
 
 type SavedTheme = {
-  name: string;
-  colors: typeof DefaultColors;
-  styles: typeof DefaultCSS;
+  "name"  : string;
+  "colors": typeof DefaultColors;
+  "styles": typeof DefaultCSS;
 };
 
 const MAX_SAVED_THEMES = 30;
@@ -52,9 +52,9 @@ function parseSavedTheme(value: unknown): SavedTheme | null {
   }
 
   return {
-    name: value.name.trim().slice(0, 64),
-    colors: { ...DefaultColors, ...colorOverrides },
-    styles: sanitizeThemeStyles(value.styles),
+    "name"  : value.name.trim().slice(0, 64),
+    "colors": { ...DefaultColors, ...colorOverrides },
+    "styles": sanitizeThemeStyles(value.styles),
   };
 }
 
@@ -84,7 +84,7 @@ function readSavedThemes(): SavedTheme[] {
   }
 
   const results: SavedTheme[] = [];
-  const names = new Set<string>();
+  const names = (new Set<string>);
 
   for (const entry of parsed) {
     const theme = parseSavedTheme(entry);
@@ -125,24 +125,23 @@ const styles = shallowRef<typeof DefaultCSS>(readThemeGeneratorStyles());
 const selectedPreset = ref("");
 const savedThemes = ref<SavedTheme[]>(readSavedThemes());
 const selectedSavedTheme = ref("");
-const selectedSavedThemeExists = computed(() =>
-  savedThemes.value.some(theme => theme.name === selectedSavedTheme.value),
+const selectedSavedThemeExists = computed(() => savedThemes.value.some(theme => theme.name === selectedSavedTheme.value),
 );
 
 const contrastChecks = computed(() => [
   {
-    "name": "Main text",
+    "name"      : "Main text",
     "foreground": colors.value.Text,
     "background": colors.value.Window,
-    "sample": "Readable body text",
-    "ratio": getContrastRatio(colors.value.Text, colors.value.Window),
+    "sample"    : "Readable body text",
+    "ratio"     : getContrastRatio(colors.value.Text, colors.value.Window),
   },
   {
-    "name": "Highlighted text",
+    "name"      : "Highlighted text",
     "foreground": colors.value.HighlightedText,
     "background": colors.value.Highlight,
-    "sample": "Selected text",
-    "ratio": getContrastRatio(colors.value.HighlightedText, colors.value.Highlight),
+    "sample"    : "Selected text",
+    "ratio"     : getContrastRatio(colors.value.HighlightedText, colors.value.Highlight),
   },
 ]);
 
@@ -150,25 +149,25 @@ const currentCode = computed(() => {
   const computedStyles = transformToCss({ "theme": styles.value, "highlight": colors.value.Highlight });
 
   return {
-    "key": 0,
+    "key" : 0,
     "data": [
       {
-        "lang": "json",
+        "lang" : "json",
         "title": "theme.json",
-        "code": JSON.stringify({
+        "code" : JSON.stringify({
           "colors": {
             ...colors.value,
             "fadeAmount": 0.5,
-            "fadeColor": "#000000",
+            "fadeColor" : "#000000",
           },
-          "name": themeName.value.trim() || "My Custom Theme",
+          "name"   : themeName.value.trim() || "My Custom Theme",
           "widgets": "Fusion",
         }, null, 2),
       },
       {
-        "lang": "css",
+        "lang" : "css",
         "title": "themeStyle.css",
-        "code": computedStyles.changed ? computedStyles.result : "/* You didn't change any CSS styles */",
+        "code" : computedStyles.changed ? computedStyles.result : "/* You didn't change any CSS styles */",
       },
     ],
   };
@@ -178,7 +177,7 @@ function selectColor({
   key,
   color,
 }: {
-  "key": keyof typeof DefaultColors;
+  "key"  : keyof typeof DefaultColors;
   "color": typeof DefaultColors[keyof typeof DefaultColors];
 }) {
   colors.value[key] = color;
@@ -213,18 +212,17 @@ function resetStyles() {
 function saveCurrentTheme() {
   const name = (themeName.value.trim() || "My Custom Theme").slice(0, 64);
   const normalizedName = name.toLocaleLowerCase();
-  const alreadyExists = savedThemes.value.some(theme =>
-    theme.name.toLocaleLowerCase() === normalizedName,
+  const alreadyExists = savedThemes.value.some(theme => theme.name.toLocaleLowerCase() === normalizedName,
   );
 
-  if (alreadyExists && !confirm('Overwrite the saved theme "' + name + '"?')) {
+  if (alreadyExists && !confirm("Overwrite the saved theme \"" + name + "\"?")) {
     return;
   }
 
   const snapshot: SavedTheme = {
     name,
-    colors: { ...colors.value },
-    styles: sanitizeThemeStyles(styles.value),
+    "colors": { ...colors.value },
+    "styles": sanitizeThemeStyles(styles.value),
   };
 
   savedThemes.value = [
@@ -251,7 +249,7 @@ function loadSavedTheme() {
 function deleteSavedTheme() {
   const theme = savedThemes.value.find(item => item.name === selectedSavedTheme.value);
 
-  if (!theme || !confirm('Delete the saved theme "' + theme.name + '"?')) {
+  if (!theme || !confirm("Delete the saved theme \"" + theme.name + "\"?")) {
     return;
   }
 
@@ -260,10 +258,10 @@ function deleteSavedTheme() {
 }
 
 function downloadTheme() {
-  const zip = new JSZip();
+  const zip = (new JSZip);
   const folderName = (themeName.value.trim() || "My Custom Theme")
-    .replace(/[\\/:*?"<>|\u0000-\u001F]/g, "-")
-    .replace(/\s+/g, " ")
+    .replaceAll(/[\\/:*?"<>|\u0000-\u001F]/g, "-")
+    .replaceAll(/\s+/g, " ")
     .slice(0, 64) || "My Custom Theme";
   const folder = zip.folder(folderName);
 
@@ -379,7 +377,7 @@ watchEffect(() => {
               v-model="themeName"
               maxlength="64"
               aria-label="Theme name"
-              class="rounded-md border border-[#45475a] bg-catppuccin-800 px-3 py-2 text-white focus:outline-none"
+              class="border border-[#45475a] rounded-md bg-catppuccin-800 px-3 py-2 text-white focus:outline-none"
               placeholder="My Custom Theme"
             />
           </label>
@@ -388,7 +386,7 @@ watchEffect(() => {
             <select
               v-model="selectedPreset"
               @change="applyColorPreset"
-              class="rounded-md border border-[#45475a] bg-catppuccin-800 px-3 py-2 text-white focus:outline-none"
+              class="border border-[#45475a] rounded-md bg-catppuccin-800 px-3 py-2 text-white focus:outline-none"
             >
               <option value="">Choose a palette…</option>
               <option v-for="preset in ColorPresets" :key="preset.name" :value="preset.name">
@@ -398,7 +396,7 @@ watchEffect(() => {
           </label>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2 rounded-md border border-[#45475a] p-3">
+        <div class="flex flex-wrap items-center gap-2 border border-[#45475a] rounded-md p-3">
           <button
             @click="saveCurrentTheme"
             class="rounded-md bg-catppuccin-800 px-3 py-2 text-sm text-white transition-[background-color] hover:bg-catppuccin-700"
@@ -408,7 +406,7 @@ watchEffect(() => {
           <select
             v-model="selectedSavedTheme"
             aria-label="Saved themes"
-            class="min-w-40 rounded-md border border-[#45475a] bg-catppuccin-800 px-3 py-2 text-sm text-white focus:outline-none"
+            class="min-w-40 border border-[#45475a] rounded-md bg-catppuccin-800 px-3 py-2 text-sm text-white focus:outline-none"
           >
             <option value="">Saved themes ({{ savedThemes.length }})</option>
             <option v-for="theme in savedThemes" :key="theme.name" :value="theme.name">
@@ -418,21 +416,21 @@ watchEffect(() => {
           <button
             @click="loadSavedTheme"
             :disabled="!selectedSavedThemeExists"
-            class="rounded-md bg-catppuccin-800 px-3 py-2 text-sm text-white transition-[background-color] hover:bg-catppuccin-700 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded-md bg-catppuccin-800 px-3 py-2 text-sm text-white transition-[background-color] disabled:cursor-not-allowed hover:bg-catppuccin-700 disabled:opacity-50"
           >
             Load
           </button>
           <button
             @click="deleteSavedTheme"
             :disabled="!selectedSavedThemeExists"
-            class="rounded-md bg-catppuccin-800 px-3 py-2 text-sm text-white transition-[background-color] hover:bg-catppuccin-700 disabled:cursor-not-allowed disabled:opacity-50"
+            class="rounded-md bg-catppuccin-800 px-3 py-2 text-sm text-white transition-[background-color] disabled:cursor-not-allowed hover:bg-catppuccin-700 disabled:opacity-50"
           >
             Delete
           </button>
           <span class="text-xs text-gray-400">Saved in this browser only · {{ MAX_SAVED_THEMES }} max</span>
         </div>
 
-        <section class="flex flex-col gap-3 rounded-md border border-[#45475a] p-3" aria-labelledby="contrast-check-title">
+        <section class="flex flex-col gap-3 border border-[#45475a] rounded-md p-3" aria-labelledby="contrast-check-title">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <h2 id="contrast-check-title" class="text-sm text-white font-semibold">Contrast check</h2>
             <span class="text-xs text-gray-400">WCAG AA normal text target: 4.5:1</span>

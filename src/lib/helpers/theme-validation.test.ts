@@ -8,40 +8,40 @@ import {
 
 test("only accepts supported six-digit color fields", () => {
   expect(sanitizeColorOverrides({
-    Base: "#102030",
-    Window: "#AABBCC",
-    Unknown: "#123456",
-    Text: "red",
-    Highlight: 42,
+    "Base"     : "#102030",
+    "Window"   : "#AABBCC",
+    "Unknown"  : "#123456",
+    "Text"     : "red",
+    "Highlight": 42,
   })).toEqual({
-    Base: "#102030",
-    Window: "#AABBCC",
+    "Base"  : "#102030",
+    "Window": "#AABBCC",
   });
 });
 
 test("merges valid stored colors with defaults", () => {
   expect(mergeThemeColors({
-    Base: "#010203",
-    Text: "broken",
+    "Base": "#010203",
+    "Text": "broken",
   })).toEqual({
     ...DefaultColors,
-    Base: "#010203",
+    "Base": "#010203",
   });
 });
 
 test("resets malformed stylesheet fields instead of trusting stored JSON", () => {
   const result = sanitizeThemeStyles({
-    LayoutBorder: true,
-    QToolButton: {
-      border: true,
-      padding: 1000,
+    "LayoutBorder": true,
+    "QToolButton" : {
+      "border"          : true,
+      "padding"         : 1000,
       "background-color": "url(javascript:alert(1))",
-      unexpected: "value",
+      "unexpected"      : "value",
     },
     "QTabBar::tab": {
-      padding: 8,
+      "padding"     : 8,
       "margin-right": -1,
-      border: "yes",
+      "border"      : "yes",
     },
   });
 
