@@ -183,7 +183,7 @@ function toggleButton(selector: UnwrapRef<typeof styleResetButtons>[number]["sel
 }
 
 function getColorInputValue(value: false | string): string {
-  return typeof value === "string" && (/^#[\\da-f]{6}(?:[\\da-f]{2})?$/i).test(value)
+  return typeof value === "string" && (/^#[\da-f]{6}(?:[\da-f]{2})?$/i).test(value)
     ? value.slice(0, 7)
     : highlight;
 }
