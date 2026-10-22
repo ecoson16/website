@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { DefaultColors } from "@/constants/customization.ts";
-import { computed, inject } from "vue";
+import { computed } from "vue";
 import { useDebounceFn } from "@vueuse/core";
-import type { TranslationsReferenceType } from "@/types/translations-reference.type.ts";
-import { TranslationsContextKey } from "@/constants/application.ts";
 
 const { colors, setColor, resetColors } = defineProps<{
   "colors"  : typeof DefaultColors;
@@ -17,8 +15,6 @@ const { colors, setColor, resetColors } = defineProps<{
   "resetColors": () => void;
 }>();
 const colorEntries = computed(() => Object.entries(colors));
-
-const translations = inject<TranslationsReferenceType>(TranslationsContextKey);
 
 const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
   const data = target as Partial<{ "name": keyof typeof DefaultColors; "value": string }>;
@@ -100,7 +96,7 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
           color     : colors.HighlightedText,
         }"
       >
-        {{ translations?.Info?.Name }}
+        Theme Preview
       </div>
     </div>
   </div>

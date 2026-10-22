@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Image from "@/components/base/Image.vue";
-import { useCatPackState } from "@/lib/stores/launcher/cat-pack-state.ts";
 
 const {
   highlight,
@@ -30,8 +29,6 @@ const {
   "tabGap"        : false | number;
 }>();
 
-const catPackStore = useCatPackState();
-
 const buttons = [
   { "name": "Launcher", "icon": "special" },
   { "name": "Minecraft", "icon": "i-lucide-box" },
@@ -47,8 +44,7 @@ const buttons = [
 const itemsThemesSettings = [
   { "name": "Icons", "input": "Lucide (White)" },
   { "name": "Widgets", "input": "Custom" },
-  // users will be able to change cat packs only from the home page, so no need for reactivity
-  { "name": "Cat", "input": catPackStore.name },
+  { "name": "Cat", "input": "Default" },
 ];
 </script>
 
@@ -197,47 +193,6 @@ const itemsThemesSettings = [
                 class="i-lucide-folder size-4 shrink-0"
                 :style="{ color: backgroundText }"
               />
-            </div>
-          </div>
-          <p
-            class="pt-2 text-xs"
-            :style="{ color: backgroundText }"
-          >
-            Cat
-          </p>
-          <div
-            class="border rounded-sm px-2 py-2 sm:cols-2 border-[theme(colors.white/.1)]"
-          >
-            <div class="flex flex-nowrap items-center justify-between">
-              <p
-                class="text-xs"
-                :style="{ color: backgroundText }"
-              >
-                Opacity
-              </p>
-              <div
-                class="h-5 flex flex-nowrap rounded-md"
-                :style="{
-                  background: base,
-                }"
-              >
-                <p
-                  class="p-1 text-xs leading-none"
-                  :style="{ color: backgroundText }"
-                >
-                  100%
-                </p>
-                <div
-                  class="h-full w-4 flex flex-col items-center justify-center rounded-md"
-                  :style="{
-                    background: background,
-                    color     : backgroundText,
-                  }"
-                >
-                  <div class="i-fluent-caret-up-16-filled size-2" />
-                  <div class="i-fluent-caret-down-16-filled size-2" />
-                </div>
-              </div>
             </div>
           </div>
           <p
