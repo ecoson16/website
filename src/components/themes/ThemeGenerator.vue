@@ -258,12 +258,12 @@ function deleteSavedTheme() {
 }
 
 function sanitizeExportName(value: string): string {
-  const invalidCharacters = '\\/:*?"<>|';
+  const invalidCharacters = String.raw`\\/:*?"<>|`;
   let result = "";
   let previousWasSpace = false;
 
   for (const character of value.trim()) {
-    const code = character.charCodeAt(0);
+    const code = (character.codePointAt(0) ?? 0);
 
     if (invalidCharacters.includes(character) || code < 32 || code === 127) {
       result += "-";
