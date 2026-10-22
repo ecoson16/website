@@ -116,7 +116,7 @@ const itemsThemesSettings = [
               color       : backgroundText,
               marginRight : tabGap === false ? 0 : `${tabGap}px`,
               padding     : tabBorderless
-                ? tabPadding === false ? 0 : `${tabPadding}px`
+                ? (tabPadding === false ? 0 : `${tabPadding}px`)
                 : '8px',
               height: tabBorderless
                 ? 'auto'
