@@ -55,7 +55,6 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
     return;
   }
 
-  // holy fuck, i'm completely confused at this point
   switch (data.name) {
     case "QToolButton:pressed": {
       modifyStyles({
@@ -132,7 +131,6 @@ const handleNumberChange = ({ target }: { "target": unknown }) => {
 };
 
 function selectAccent() {
-  // ???
   modifyStyles({
     ...styles,
     "QToolButton:hover": {
