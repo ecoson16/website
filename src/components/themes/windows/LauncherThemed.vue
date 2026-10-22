@@ -93,7 +93,7 @@ function getToolBarButtonBorderColor(name: string, buttonBorderless: boolean) {
             background  : getToolBarButtonBackground(button.name, buttonBackground, buttonBorderless),
             borderColor : getToolBarButtonBorderColor(button.name, buttonBorderless),
             borderRadius: buttonBorderless ? 0 : '2px',
-            padding     : `${buttonPadding}px` || '4px',
+            padding     : buttonPadding === false ? '4px' : `${buttonPadding}px`,
           }"
         >
           <div :class="['size-6', button.icon]" />
